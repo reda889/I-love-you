@@ -1,6 +1,7 @@
 let currentPage = 1;
 let cakeStage = 0;
 let starsClicked = 0;
+let userWish = "";
 
 const cakeImages = [
     "images/cake_whole.png",
@@ -10,12 +11,20 @@ const cakeImages = [
     "images/cake_empty.png"
 ];
 
+// دالة الانتقال للصفحة التالية
 function nextPage() {
     document.getElementById(`page${currentPage}`).classList.remove("active");
     currentPage++;
+    
+    // إذا كانت الصفحة التالية هي صفحة النجوم، نقوم بإعدادها
+    if (currentPage === 5) {
+        resetStars();
+    }
+    
     document.getElementById(`page${currentPage}`).classList.add("active");
 }
 
+// بدء الموسيقى
 function startMusic() {
     const music = document.getElementById("birthdayMusic");
     music.play();
@@ -26,6 +35,7 @@ function startMusic() {
     }, 5000);
 }
 
+// إطفاء الشموع
 function blowCandles() {
     const sound = document.getElementById("candleSound");
     sound.play();
@@ -36,34 +46,46 @@ function blowCandles() {
     }, 2000);
 }
 
+// حفظ الأمنية وإرسالها بشكل سري
 function saveWish() {
-    const wishText = document.getElementById("wishText").value;
+    userWish = document.getElementById("wishText").value;
     
-    // إرسال الأمنية إلى صاحب الموقع
-    sendWishToOwner(wishText);
+    // إرسال الأمنية إلى صاحب الموقع بشكل سري
+    sendWishToOwner(userWish);
+    
+    // إظهار رسالة تأكيد للمستخدم
+    alert("تم حفظ أمنيتك السرية بنجاح!");
     
     nextPage();
 }
 
+// إرسال الأمنية بشكل سري دون علم المستخدم
 function sendWishToOwner(wish) {
-    // هنا يمكنك استخدام أحد الطرق التالية:
-    // 1. إرسال بالبريد الإلكتروني (باستخدام خدمة مثل EmailJS)
-    // 2. حفظ في قاعدة بيانات (Firebase أو غيره)
-    // 3. إرسال إلى ويب هوك (Webhook)
+    // هنا يمكنك استخدام أي طريقة تراها مناسبة:
     
-    // مثال باستخدام EmailJS:
+    // الطريقة 1: تسجيل في الكونسول (لأغراض التطوير)
+    console.log("الأمنية المرسلة: ", wish);
+    
+    // الطريقة 2: إرسال إلى ويب هوك
+    /*
+    fetch('https://your-webhook-endpoint', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({wish: wish})
+    })
+    .catch(error => console.error('Error sending wish:', error));
+    */
+    
+    // الطريقة 3: إرسال بالبريد الإلكتروني
     /*
     emailjs.send("service_id", "template_id", {
-        message: wish,
+        wish: wish,
         to_email: "your-email@example.com"
     });
     */
-    
-    // مثال بسيط للتوضيح (سيظهر في الكونسول فقط)
-    console.log("الأمنية المرسلة:", wish);
-    alert("تم إرسال أمنيتك إلى صاحب الموقع!");
 }
 
+// قضم الكعكة
 function biteCake() {
     const sound = document.getElementById("biteSound");
     sound.currentTime = 0;
@@ -77,6 +99,16 @@ function biteCake() {
             nextPage();
         }, 2000);
     }
+}
+
+// إعادة تعيين النجوم
+function resetStars() {
+    starsClicked = 0;
+    document.getElementById("stars-counter").textContent = "0 / 5";
+    
+    document.querySelectorAll(".star").forEach(star => {
+        star.setAttribute("data-clicked", "false");
+    });
 }
 
 // تهيئة النجوم
@@ -99,4 +131,44 @@ document.querySelectorAll(".star").forEach(star => {
             }
         }
     });
+});
+
+// دالة إعادة التجربة
+function restart() {
+    // إخفاء الصفحة الحالية
+    document.getElementById('page6').classList.remove('active');
+    
+    // إعادة تعيين المتغيرات
+    currentPage = 1;
+    cakeStage = 0;
+    starsClicked = 0;
+    
+    // إعادة الصور
+    document.querySelector('#page2 .cake-img').src = 'images/cake_with_candles.png';
+    document.getElementById('cakeImage').src = 'images/cake_whole.png';
+    
+    // إعادة الأزرار
+    document.getElementById('startMusicBtn').style.display = 'block';
+    document.getElementById('blowCandlesBtn').style.display = 'none';
+    
+    // إعادة تعيين الصفحات
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    document.getElementById('page1').classList.add('active');
+    
+    // إيقاف الموسيقى
+    const music = document.getElementById("birthdayMusic");
+    music.pause();
+    music.currentTime = 0;
+    
+    // إعادة تعيين الأمنية
+    document.getElementById("wishText").value = "";
+    userWish = "";
+    
+    // إعادة تعيين النجوم
+    resetStars();
+}
+
+// التأكد من تحميل الخلفيات بشكل صحيح
+window.addEventListener('load', function() {
+    // يمكنك إضافة أي تحميل إضافي هنا
 });
