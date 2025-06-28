@@ -3,17 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هدية عيد ميلاد</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>هدية عيد ميلاد مخصصة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* تأمين خلفيات الصفحات هنا كاحتياطي */
-        #page1 { background-image: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
-        #page2 { background-image: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
-        #page3 { background-image: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-        #page4 { background-image: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
-        #page5 { background-image: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
-        #page6 { background-image: linear-gradient(135deg, #a6c0fe 0%, #f68084 100%); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .page {
+            display: none;
+            height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transition: opacity 0.5s;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* خلفيات الصفحات - سيتم تعيينها عبر JS */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        button:hover {
+            background-color: #c2185b;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .cake-img {
+            width: 300px;
+            max-width: 90%;
+            margin: 20px 0;
+            transition: all 0.3s;
+            z-index: 2;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+        }
+
+        textarea {
+            width: 80%;
+            height: 120px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #e91e63;
+            border-radius: 15px;
+            font-size: 16px;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .stars-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto;
+            z-index: 2;
+        }
+
+        .star {
+            width: 100%;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+        }
+
+        .star[data-clicked="true"] {
+            opacity: 0.3;
+            transform: scale(0.7);
+            filter: none;
+        }
+
+        .message {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            backdrop-filter: blur(10px);
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .restart-btn {
+            background-color: #9c27b0;
+            margin-top: 30px;
+        }
+
+        .restart-btn:hover {
+            background-color: #7b1fa2;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                width: 90%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stars-container {
+                gap: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -21,8 +186,8 @@
     <div class="page active" id="page1">
         <div class="overlay"></div>
         <div class="content">
-            <h1>عيد ميلاد سعيد!</h1>
-            <p>كل عام وأنت بألف خير</p>
+            <h1>🎂 عيد ميلاد سعيد! 🎉</h1>
+            <p>كل عام وأنت بألف خير، أتمنى لك يومًا سعيدًا مليئًا بالفرح والضحكات</p>
             <button onclick="nextPage()">ابدأ الاحتفال!</button>
         </div>
     </div>
@@ -32,8 +197,8 @@
         <div class="overlay"></div>
         <div class="content">
             <img src="images/cake_with_candles.png" class="cake-img">
-            <button id="startMusicBtn" onclick="startMusic()">تشغيل أغنية العيد</button>
-            <button id="blowCandlesBtn" style="display:none;" onclick="blowCandles()">أطفئ الشموع</button>
+            <button id="startMusicBtn" onclick="startMusic()">🎵 تشغيل أغنية العيد 🎶</button>
+            <button id="blowCandlesBtn" style="display:none;" onclick="blowCandles()">🕯️ أطفئ الشموع 🕯️</button>
         </div>
     </div>
 
@@ -41,9 +206,9 @@
     <div class="page" id="page3">
         <div class="overlay"></div>
         <div class="content">
-            <h1>ما هي أمنيتك السرية؟</h1>
+            <h1>✨ ما هي أمنيتك السرية؟ ✨</h1>
             <textarea id="wishText" placeholder="اكتب أمنيتك هنا..."></textarea>
-            <button onclick="saveWish()">احفظ الأمنية</button>
+            <button onclick="saveWish()">حفظ الأمنية</button>
         </div>
     </div>
 
@@ -51,9 +216,9 @@
     <div class="page" id="page4">
         <div class="overlay"></div>
         <div class="content">
-            <h1>حان وقت أكل الكعكة!</h1>
+            <h1>🍰 حان وقت أكل الكعكة! 🍰</h1>
             <img id="cakeImage" src="images/cake_whole.png" class="cake-img">
-            <button onclick="biteCake()">اضغط لقضم الكعكة</button>
+            <button onclick="biteCake()">🍴 اضغط لقضم الكعكة 🍴</button>
         </div>
     </div>
 
@@ -61,7 +226,7 @@
     <div class="page" id="page5">
         <div class="overlay"></div>
         <div class="content">
-            <h1>اضرب 5 نجوم!</h1>
+            <h1>⭐ اضرب 5 نجوم! ⭐</h1>
             <div class="stars-container">
                 <img src="images/star.png" class="star" data-clicked="false">
                 <img src="images/star.png" class="star" data-clicked="false">
@@ -77,12 +242,13 @@
     <div class="page" id="page6">
         <div class="overlay"></div>
         <div class="content">
-            <h1>رسالة خاصة لك</h1>
+            <h1>💌 رسالة خاصة لك 💌</h1>
             <div class="message">
                 <p>كل عام وأنت أغلى إنسان...</p>
                 <p>شكراً لك على مشاركتي هذا اليوم الخاص!</p>
+                <p>أتمنى أن تكون أمنيتك قد تحققت في هذا اليوم السعيد ❤️</p>
             </div>
-            <button onclick="restart()" class="restart-btn">إعادة التجربة</button>
+            <button onclick="restart()" class="restart-btn">🔄 إعادة التجربة 🔄</button>
         </div>
     </div>
 
@@ -92,6 +258,176 @@
     <audio id="candleSound" src="audio/candle_blow.mp3"></audio>
     <audio id="starSound" src="audio/star_click.mp3"></audio>
 
-    <script src="script.js"></script>
+    <script>
+        // متغيرات التحكم
+        let currentPage = 1;
+        let cakeStage = 0;
+        let starsClicked = 0;
+        let userWish = "";
+        let autoTransition = false; // متغير للتحكم بالانتقال التلقائي
+
+        // مسارات صور الكعكة
+        const cakeImages = [
+            "images/cake_whole.png",
+            "images/cake_bite1.png",
+            "images/cake_bite2.png",
+            "images/cake_bite3.png",
+            "images/cake_empty.png"
+        ];
+
+        // دالة الانتقال للصفحة التالية
+        function nextPage() {
+            if (autoTransition) return;
+            
+            document.getElementById(`page${currentPage}`).classList.remove("active");
+            currentPage++;
+            
+            if (currentPage === 5) {
+                resetStars();
+            }
+            
+            document.getElementById(`page${currentPage}`).classList.add("active");
+        }
+
+        // بدء الموسيقى
+        function startMusic() {
+            const music = document.getElementById("birthdayMusic");
+            music.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
+            document.getElementById("startMusicBtn").style.display = "none";
+            
+            setTimeout(() => {
+                document.getElementById("blowCandlesBtn").style.display = "block";
+            }, 5000);
+        }
+
+        // إطفاء الشموع
+        function blowCandles() {
+            const sound = document.getElementById("candleSound");
+            sound.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
+            document.querySelector(".cake-img").src = "images/cake_no_candles.png";
+            
+            autoTransition = true;
+            
+            setTimeout(() => {
+                autoTransition = false;
+                nextPage();
+            }, 2000);
+        }
+
+        // حفظ الأمنية
+        function saveWish() {
+            userWish = document.getElementById("wishText").value;
+            
+            // إرسال الأمنية إلى صاحب الموقع بشكل سري
+            sendWishToOwner(userWish);
+            
+            nextPage();
+        }
+
+        // إرسال الأمنية بشكل سري
+        function sendWishToOwner(wish) {
+            // هنا يمكنك استخدام أي طريقة تراها مناسبة
+            console.log("الأمنية المرسلة: ", wish);
+            // يمكنك إضافة كود إرسال الأمنية إليك هنا
+        }
+
+        // قضم الكعكة
+        function biteCake() {
+            const sound = document.getElementById("biteSound");
+            sound.currentTime = 0;
+            sound.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
+            
+            cakeStage++;
+            document.getElementById("cakeImage").src = cakeImages[cakeStage];
+            
+            if (cakeStage >= cakeImages.length - 1) {
+                autoTransition = true;
+                
+                setTimeout(() => {
+                    autoTransition = false;
+                    nextPage();
+                }, 2000);
+            }
+        }
+
+        // إعادة تعيين النجوم
+        function resetStars() {
+            starsClicked = 0;
+            document.getElementById("stars-counter").textContent = "0 / 5";
+            
+            document.querySelectorAll(".star").forEach(star => {
+                star.setAttribute("data-clicked", "false");
+            });
+        }
+
+        // تهيئة النجوم
+        document.querySelectorAll(".star").forEach(star => {
+            star.addEventListener("click", function() {
+                if (this.getAttribute("data-clicked") === "false") {
+                    this.setAttribute("data-clicked", "true");
+                    starsClicked++;
+                    
+                    const sound = document.getElementById("starSound");
+                    sound.currentTime = 0;
+                    sound.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
+                    
+                    document.getElementById("stars-counter").textContent = `${starsClicked} / 5`;
+                    
+                    if (starsClicked === 5) {
+                        autoTransition = true;
+                        
+                        setTimeout(() => {
+                            autoTransition = false;
+                            nextPage();
+                        }, 1000);
+                    }
+                }
+            });
+        });
+
+        // دالة إعادة التجربة
+        function restart() {
+            // إعادة تعيين المتغيرات
+            currentPage = 1;
+            cakeStage = 0;
+            starsClicked = 0;
+            autoTransition = false;
+            
+            // إعادة الصور
+            document.querySelector('#page2 .cake-img').src = 'images/cake_with_candles.png';
+            document.getElementById('cakeImage').src = 'images/cake_whole.png';
+            
+            // إعادة الأزرار
+            document.getElementById('startMusicBtn').style.display = 'block';
+            document.getElementById('blowCandlesBtn').style.display = 'none';
+            
+            // إعادة تعيين الصفحات
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById('page1').classList.add('active');
+            
+            // إيقاف الموسيقى
+            const music = document.getElementById("birthdayMusic");
+            music.pause();
+            music.currentTime = 0;
+            
+            // إعادة تعيين الأمنية
+            document.getElementById("wishText").value = "";
+            userWish = "";
+            
+            // إعادة تعيين النجوم
+            resetStars();
+        }
+
+        // التأكد من تحميل الخلفيات
+        window.addEventListener('load', function() {
+            // تطبيق خلفيات الصفحات
+            for (let i = 1; i <= 6; i++) {
+                const page = document.getElementById(`page${i}`);
+                if (page) {
+                    page.style.backgroundImage = `url('images/bg${i}.jpg')`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
