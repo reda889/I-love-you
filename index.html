@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Celebration</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <div class="page active" id="page1">
+    <h1>Happy Birthday!</h1>
+    <p>Wishing you joy and love on your special day!</p>
+    <button onclick="nextPage()">Start</button>
+  </div>
+
+  <div class="page" id="page2">
+    <h1>Here's your birthday cake!</h1>
+    <img id="cakeImage" src="images/cake_with_candles.png" alt="Cake" width="300" />
+    <br />
+    <button onclick="blowCandles()">Blow the candles</button>
+  </div>
+
+  <div class="page" id="page3">
+    <h1>Let's eat the cake!</h1>
+    <img id="eatCakeImage" src="images/cake_whole.png" alt="Cake" width="300" />
+    <br />
+    <button onclick="eatCake()">Eat</button>
+  </div>
+
+  <div class="page" id="page4">
+    <h1>Make a wish</h1>
+    <input type="text" placeholder="Type your birthday wish..." />
+    <br />
+    <button onclick="nextPage()">Submit Wish</button>
+  </div>
+
+  <div class="page" id="page5">
+    <h1>Sweet Memories</h1>
+    <p>Thank you for being part of this celebration. Cherish the joy and love shared today.</p>
+  </div>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>
