@@ -1,44 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Birthday Celebration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عيد ميلاد سعيد</title>
   <link rel="stylesheet" href="styles/style.css" />
 </head>
 <body>
+  <!-- الصفحة 1: تهنئة -->
   <div class="page active" id="page1">
-    <h1>Happy Birthday!</h1>
-    <p>Wishing you joy and love on your special day!</p>
-    <button onclick="nextPage()">Start</button>
-  </div>
-
-  <div class="page" id="page2">
-    <h1>Here's your birthday cake!</h1>
-    <img id="cakeImage" src="images/cake_with_candles.png" alt="Cake" width="300" />
+    <h1>🎉 كود تهنئة عيد ميلاد 🎉</h1>
+    <p>هنا يمكن كتابة نص التهنئة أو إدخال كود التهنئة الخاص</p>
+    <button onclick="nextPage()">التالي</button>
+  </div>  <!-- الصفحة 2: تشغيل الموسيقى -->  <div class="page" id="page2">
+    <h1>جاهز للاحتفال؟</h1>
+    <button onclick="startMusic()">ابدأ أغنية عيد الميلاد 🎵</button>
+    <button id="candleBtn" onclick="nextPage()" style="display:none">اطفئ الشموع 🎂</button>
+  </div>  <!-- الصفحة 3: أكل الكعكة -->  <div class="page" id="page3">
+    <h1>هيا لنأكل الكعكة!</h1>
+    <img id="eatCakeImage" src="images/cake_whole.png" alt="كعكة" width="300" />
     <br />
-    <button onclick="blowCandles()">Blow the candles</button>
-  </div>
-
-  <div class="page" id="page3">
-    <h1>Let's eat the cake!</h1>
-    <img id="eatCakeImage" src="images/cake_whole.png" alt="Cake" width="300" />
+    <button onclick="eatCake()">قضم 🍰</button>
+  </div>  <!-- الصفحة 4: الأمنية -->  <div class="page" id="page4">
+    <h1>تمنّى أمنية 🎁</h1>
+    <input type="text" placeholder="اكتب أمنيتك هنا..." />
     <br />
-    <button onclick="eatCake()">Eat</button>
-  </div>
+    <button onclick="nextPage()">أرسل الأمنية</button>
+  </div>  <!-- الصفحة 5: لعبة النجوم -->  <div class="page" id="page5">
+    <h1>اضرب النجوم! ⭐</h1>
+    <p>اضرب النجوم الخمسة جميعًا للمتابعة 🎯</p>
+    <div id="stars-area">
+      <img src="images/star1.png" class="star" data-hit="false" />
+      <img src="images/star2.png" class="star" data-hit="false" />
+      <img src="images/star3.png" class="star" data-hit="false" />
+      <img src="images/star4.png" class="star" data-hit="false" />
+      <img src="images/star5.png" class="star" data-hit="false" />
+    </div>
+    <p id="stars-score">0 / 5</p>
+  </div>  <!-- الصفحة 6: النص الجميل -->  <div class="page" id="page6">
+    <h1>ذكريات لطيفة 💖</h1>
+    <p>كل لحظة قضيناها معًا اليوم كانت مليئة بالفرح والدفء. شكرًا لأنك جزء من هذا اليوم الجميل.</p>
+    <button onclick="restart()">🎉 إعادة التجربة</button>
+  </div>  <!-- الصوتيات --><audio id="bgMusic" src="audio/music.mp3"></audio> <audio id="biteSound" src="audio/eat.mp3"></audio>
 
-  <div class="page" id="page4">
-    <h1>Make a wish</h1>
-    <input type="text" placeholder="Type your birthday wish..." />
-    <br />
-    <button onclick="nextPage()">Submit Wish</button>
-  </div>
-
-  <div class="page" id="page5">
-    <h1>Sweet Memories</h1>
-    <p>Thank you for being part of this celebration. Cherish the joy and love shared today.</p>
-  </div>
-
-  <script src="scripts/main.js"></script>
-</body>
+  <script src="scripts/main.js"></script></body>
 </html>
