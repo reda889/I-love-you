@@ -3,48 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رسالة خاصة</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <title>هدية عيد ميلاد</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- الصفحة 1 -->
-    <div class="page active" id="page1">
-        <h1>مرحباً!</h1>
-        <p>اضغط على الزر للمتابعة</p>
-        <button onclick="nextPage()">التالي</button>
-    </div>
-
-    <!-- الصفحة 2 -->
-    <div class="page" id="page2">
-        <h1>الكعكة</h1>
-        <img id="cakeImage" src="images/cake_whole.png" alt="كعكة" width="300">
-        <button onclick="biteCake()">اضغط لقضم الكعكة</button>
-    </div>
-
-    <!-- الصفحة 3 -->
-    <div class="page" id="page3">
-        <h1>أدخل اسمك</h1>
-        <input type="text" placeholder="اسمك هنا...">
-        <button onclick="nextPage()">التالي</button>
-    </div>
-
-    <!-- الصفحة 4 -->
-    <div class="page" id="page4">
-        <h1>تقييم النجوم</h1>
-        <div id="stars-area">
-            <img src="images/star.png" class="star" data-clicked="false">
-            <img src="images/star.png" class="star" data-clicked="false">
-            <img src="images/star.png" class="star" data-clicked="false">
-            <img src="images/star.png" class="star" data-clicked="false">
-            <img src="images/star.png" class="star" data-clicked="false">
+    <!-- الصفحة 1: التهنئة -->
+    <div class="page active" id="page1" style="background-image: url('images/bg1.jpg');">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>عيد ميلاد سعيد!</h1>
+            <p>كل عام وأنت بألف خير</p>
+            <button onclick="nextPage()">ابدأ الاحتفال!</button>
         </div>
-        <p id="stars-score">0 / 5</p>
+    </div>
+
+    <!-- الصفحة 2: إطفاء الشموع -->
+    <div class="page" id="page2" style="background-image: url('images/bg2.jpg');">
+        <div class="overlay"></div>
+        <div class="content">
+            <img src="images/cake_with_candles.png" class="cake-img">
+            <button id="startMusicBtn" onclick="startMusic()">تشغيل أغنية العيد</button>
+            <button id="blowCandlesBtn" style="display:none;" onclick="blowCandles()">أطفئ الشموع</button>
+        </div>
+    </div>
+
+    <!-- الصفحة 3: الأمنية -->
+    <div class="page" id="page3" style="background-image: url('images/bg3.jpg');">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>ما هي أمنيتك؟</h1>
+            <textarea id="wishText" placeholder="اكتب أمنيتك هنا..."></textarea>
+            <button onclick="saveWish()">احفظ الأمنية</button>
+        </div>
+    </div>
+
+    <!-- الصفحة 4: أكل الكعكة -->
+    <div class="page" id="page4" style="background-image: url('images/bg4.jpg');">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>حان وقت أكل الكعكة!</h1>
+            <img id="cakeImage" src="images/cake_whole.png" class="cake-img">
+            <button onclick="biteCake()">اضغط لقضم الكعكة</button>
+        </div>
+    </div>
+
+    <!-- الصفحة 5: لعبة النجوم -->
+    <div class="page" id="page5" style="background-image: url('images/bg5.jpg');">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>اضرب 5 نجوم!</h1>
+            <div class="stars-container">
+                <img src="images/star.png" class="star" data-clicked="false">
+                <img src="images/star.png" class="star" data-clicked="false">
+                <img src="images/star.png" class="star" data-clicked="false">
+                <img src="images/star.png" class="star" data-clicked="false">
+                <img src="images/star.png" class="star" data-clicked="false">
+            </div>
+            <p id="stars-counter">0 / 5</p>
+        </div>
+    </div>
+
+    <!-- الصفحة 6: الرسالة -->
+    <div class="page" id="page6" style="background-image: url('images/bg6.jpg');">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>رسالة خاصة لك</h1>
+            <div class="message">
+                <p>كل عام وأنت أغلى إنسان...</p>
+                <p>شكراً لك على مشاركتي هذا اليوم الخاص!</p>
+            </div>
+        </div>
     </div>
 
     <!-- ملفات الصوت -->
-    <audio id="bgMusic" src="audio/magic.mp3"></audio>
-    <audio id="biteSound" src="audio/bite.mp3"></audio>
+    <audio id="birthdayMusic" src="audio/happy_birthday.mp3"></audio>
+    <audio id="biteSound" src="audio/bite_sound.mp3"></audio>
+    <audio id="candleSound" src="audio/candle_blow.mp3"></audio>
+    <audio id="starSound" src="audio/star_click.mp3"></audio>
 
-    <script src="script/main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
