@@ -2,6 +2,7 @@ let currentPage = 1;
 let cakeStage = 0;
 let starsClicked = 0;
 let userWish = "";
+let autoTransition = false; // متغير جديد للتحكم بالانتقال التلقائي
 
 const cakeImages = [
     "images/cake_whole.png",
@@ -13,6 +14,9 @@ const cakeImages = [
 
 // دالة الانتقال للصفحة التالية
 function nextPage() {
+    // لا تنتقل إذا كان هناك انتقال تلقائي قيد التنفيذ
+    if (autoTransition) return;
+    
     document.getElementById(`page${currentPage}`).classList.remove("active");
     currentPage++;
     
@@ -27,7 +31,7 @@ function nextPage() {
 // بدء الموسيقى
 function startMusic() {
     const music = document.getElementById("birthdayMusic");
-    music.play();
+    music.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
     document.getElementById("startMusicBtn").style.display = "none";
     
     setTimeout(() => {
@@ -38,64 +42,49 @@ function startMusic() {
 // إطفاء الشموع
 function blowCandles() {
     const sound = document.getElementById("candleSound");
-    sound.play();
+    sound.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
     document.querySelector(".cake-img").src = "images/cake_no_candles.png";
     
+    // منع الانتقالات الأخرى أثناء هذا الانتقال
+    autoTransition = true;
+    
     setTimeout(() => {
+        autoTransition = false;
         nextPage();
     }, 2000);
 }
 
-// حفظ الأمنية وإرسالها بشكل سري
+// حفظ الأمنية
 function saveWish() {
     userWish = document.getElementById("wishText").value;
     
     // إرسال الأمنية إلى صاحب الموقع بشكل سري
     sendWishToOwner(userWish);
     
-    // إظهار رسالة تأكيد للمستخدم
-    alert("تم حفظ أمنيتك السرية بنجاح!");
-    
     nextPage();
 }
 
-// إرسال الأمنية بشكل سري دون علم المستخدم
+// إرسال الأمنية بشكل سري
 function sendWishToOwner(wish) {
-    // هنا يمكنك استخدام أي طريقة تراها مناسبة:
-    
-    // الطريقة 1: تسجيل في الكونسول (لأغراض التطوير)
+    // هنا يمكنك استخدام أي طريقة تراها مناسبة
     console.log("الأمنية المرسلة: ", wish);
-    
-    // الطريقة 2: إرسال إلى ويب هوك
-    /*
-    fetch('https://your-webhook-endpoint', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({wish: wish})
-    })
-    .catch(error => console.error('Error sending wish:', error));
-    */
-    
-    // الطريقة 3: إرسال بالبريد الإلكتروني
-    /*
-    emailjs.send("service_id", "template_id", {
-        wish: wish,
-        to_email: "your-email@example.com"
-    });
-    */
 }
 
 // قضم الكعكة
 function biteCake() {
     const sound = document.getElementById("biteSound");
     sound.currentTime = 0;
-    sound.play();
+    sound.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
     
     cakeStage++;
     document.getElementById("cakeImage").src = cakeImages[cakeStage];
     
     if (cakeStage >= cakeImages.length - 1) {
+        // منع الانتقالات الأخرى أثناء هذا الانتقال
+        autoTransition = true;
+        
         setTimeout(() => {
+            autoTransition = false;
             nextPage();
         }, 2000);
     }
@@ -120,12 +109,16 @@ document.querySelectorAll(".star").forEach(star => {
             
             const sound = document.getElementById("starSound");
             sound.currentTime = 0;
-            sound.play();
+            sound.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
             
             document.getElementById("stars-counter").textContent = `${starsClicked} / 5`;
             
             if (starsClicked === 5) {
+                // منع الانتقالات الأخرى أثناء هذا الانتقال
+                autoTransition = true;
+                
                 setTimeout(() => {
+                    autoTransition = false;
                     nextPage();
                 }, 1000);
             }
@@ -135,13 +128,11 @@ document.querySelectorAll(".star").forEach(star => {
 
 // دالة إعادة التجربة
 function restart() {
-    // إخفاء الصفحة الحالية
-    document.getElementById('page6').classList.remove('active');
-    
     // إعادة تعيين المتغيرات
     currentPage = 1;
     cakeStage = 0;
     starsClicked = 0;
+    autoTransition = false;
     
     // إعادة الصور
     document.querySelector('#page2 .cake-img').src = 'images/cake_with_candles.png';
@@ -168,7 +159,35 @@ function restart() {
     resetStars();
 }
 
-// التأكد من تحميل الخلفيات بشكل صحيح
+// حل نهائي لمشكلة الخلفيات
 window.addEventListener('load', function() {
-    // يمكنك إضافة أي تحميل إضافي هنا
+    // حل بديل للخلفيات إذا لم تعمل المسارات
+    const backgrounds = [
+        'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)',
+        'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+        'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+        'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+        'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)',
+        'linear-gradient(135deg, #a6c0fe 0%, #f68084 100%)'
+    ];
+    
+    // تطبيق خلفيات بديلة إذا لم تعمل الخلفيات الأصلية
+    for (let i = 1; i <= 6; i++) {
+        const page = document.getElementById(`page${i}`);
+        if (!page) continue;
+        
+        // محاولة تحميل الصورة الأصلية
+        const img = new Image();
+        img.src = `images/bg${i}.jpg`;
+        
+        img.onerror = function() {
+            // إذا فشل تحميل الصورة، استخدم الخلفية البديلة
+            page.style.backgroundImage = backgrounds[i-1];
+        };
+        
+        img.onload = function() {
+            // إذا نجح تحميل الصورة، استخدمها
+            page.style.backgroundImage = `url('images/bg${i}.jpg')`;
+        };
+    }
 });
