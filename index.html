@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- الصفحة 1: التهنئة -->
-    <div class="page active" id="page1" style="background-image: url('images/bg1.jpg');">
+    <div class="page active" id="page1">
         <div class="overlay"></div>
         <div class="content">
             <h1>عيد ميلاد سعيد!</h1>
@@ -19,7 +19,7 @@
     </div>
 
     <!-- الصفحة 2: إطفاء الشموع -->
-    <div class="page" id="page2" style="background-image: url('images/bg2.jpg');">
+    <div class="page" id="page2">
         <div class="overlay"></div>
         <div class="content">
             <img src="images/cake_with_candles.png" class="cake-img">
@@ -29,17 +29,17 @@
     </div>
 
     <!-- الصفحة 3: الأمنية -->
-    <div class="page" id="page3" style="background-image: url('images/bg3.jpg');">
+    <div class="page" id="page3">
         <div class="overlay"></div>
         <div class="content">
-            <h1>ما هي أمنيتك؟</h1>
+            <h1>ما هي أمنيتك السرية؟</h1>
             <textarea id="wishText" placeholder="اكتب أمنيتك هنا..."></textarea>
             <button onclick="saveWish()">احفظ الأمنية</button>
         </div>
     </div>
 
     <!-- الصفحة 4: أكل الكعكة -->
-    <div class="page" id="page4" style="background-image: url('images/bg4.jpg');">
+    <div class="page" id="page4">
         <div class="overlay"></div>
         <div class="content">
             <h1>حان وقت أكل الكعكة!</h1>
@@ -49,7 +49,7 @@
     </div>
 
     <!-- الصفحة 5: لعبة النجوم -->
-    <div class="page" id="page5" style="background-image: url('images/bg5.jpg');">
+    <div class="page" id="page5">
         <div class="overlay"></div>
         <div class="content">
             <h1>اضرب 5 نجوم!</h1>
@@ -65,7 +65,7 @@
     </div>
 
     <!-- الصفحة 6: الرسالة -->
-    <div class="page" id="page6" style="background-image: url('images/bg6.jpg');">
+    <div class="page" id="page6">
         <div class="overlay"></div>
         <div class="content">
             <h1>رسالة خاصة لك</h1>
@@ -73,6 +73,7 @@
                 <p>كل عام وأنت أغلى إنسان...</p>
                 <p>شكراً لك على مشاركتي هذا اليوم الخاص!</p>
             </div>
+            <button onclick="restart()" class="restart-btn">إعادة التجربة</button>
         </div>
     </div>
 
